@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    table { 
+      border-collapse: collapse; 
+    }
+    th, td {
+      width: 100px;
+      height: 50px;
+      text-align: center;
+      border: 1px solid black;
+    }
+    .table1 {
+      float: left;
+      margin-right: 20px;
+      width: calc(20%);
+    }
+    .table2 {
+      margin-left: 20px;
+      width: calc(20%);
+    }
+    .table3 {
+      clear: both;
+      margin-top: 50px;
+      width: calc(40% + 20px);
+    }
+  </style>
+</head>
+<body>
+  <h1>문제 내용</h1>
+  <p>정육점의 가격표와 요리별 재료입니다. 아래의 문제를 풀어보세요. (1~3)</p>
+
+  <table class="table1">
+    <tr>
+      <th scope="col">부위 (100g)</th>
+      <th scope="col">가격</th>
+    </tr>
+    <tr>
+      <td>삼겹살</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>목살</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>앞다리살</td>
+      <td></td>
+    </tr>
+  </table>
+  <table class="table2">
+    <tr>
+      <th scope="col">부위 (100g)</th>
+      <th scope="col">가격</th>
+    </tr>
+    <tr>
+      <td>등심</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>안심</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>양지</td>
+      <td></td>
+    </tr>
+  </table>
+  <table class="table3">
+    <tr>
+      <th scope="col">요리</th>
+      <th scope="col">재료 (1인분 기준)</th>
+    </tr>
+    <tr>
+      <td>돼지고기찜</td>
+      <td>목살 200g</td>
+    </tr>
+    <tr>
+      <td>소고기미역국</td>
+      <td>양지 50g</td>
+    </tr>
+    <tr>
+      <td>안심스테이크</td>
+      <td>안심 200g</td>
+    </tr>
+    <tr>
+      <td>등심스테이크</td>
+      <td>등심 200g</td>
+    </tr>
+  </table>
+
+  <p>1. 범수씨는 아내의 생일을 맞아 소고기미역국 2인분을 만들 계획입니다. 구매할 고기의 가격은 얼마인가요?</p>
+  <input type="text" id="answer1" placeholder="답을 입력하세요">
+  <button onclick="checkAnswer1()" id="submit1">제출</button>
+  <button onclick="enableSubmit(1)" id="edit1" disabled>수정</button>
+
+  <p>2. 소민 씨는 집들이 음식으로 돼지김치찜 4인분을 준비하려 합니다. 구매할 고기의 가격은 얼마인가요?</p>
+  <input type="text" id="answer2" placeholder="답을 입력하세요">
+  <button onclick="checkAnswer2()" id="submit2">제출</button>
+  <button onclick="enableSubmit(2)" id="edit2" disabled>수정</button>
+
+  <p>3. 나진 씨는 가족을 위해 등심스테이크 2인분과 안심스테이크 2인분을 준비하려 합니다. 구매할 고기의 가격은 얼마인가요?</p>
+  <input type="text" id="answer3" placeholder="답을 입력하세요">
+  <button onclick="checkAnswer3()" id="submit3">제출</button>
+  <button onclick="enableSubmit(3)" id="edit3" disabled>수정</button>
+
+  <br><button onclick="showFinalResult()">답안지 제출</button>
+
+  <script>
+    let correctCount = 0;
+    let incorrectCount = 0;
+
+    // 정답 확인 상태 저장 변수
+    let answer1Correct = null;
+    let answer2Correct = null;
+    let answer3Correct = null;
+
+    // 100원 단위로 랜덤한 숫자를 생성하게 설정
+    function getRandomInt(min, max) {
+      return Math.floor(Math.random() * ((max - min) / 100 + 1)) * 100 + min;
+    }
+
+    // 테이블 1에 3000~10000 사이의 랜덤 숫자 추가
+    const table1 = document.querySelectorAll('.table1 td:nth-child(2)');
+    table1.forEach(cell => {
+      cell.textContent = getRandomInt(3000, 10000);
+    });
+
+    // 테이블 2에 5000~15000 사이의 랜덤 숫자 추가
+    const table2 = document.querySelectorAll('.table2 td:nth-child(2)');
+    table2.forEach(cell => {
+      cell.textContent = getRandomInt(5000, 15000);
+    });
+
+    // 1번 문제
+    function checkAnswer1() {
+      // 양지 가격 가져오기
+      const yangjiPrice = parseInt(document.querySelector('.table2 tr:nth-child(4) td:nth-child(2)').textContent);
+      // 소고기미역국 2인분 가격 계산 (양지 100g 필요)
+      const correctPrice = yangjiPrice;
+      // 입력된 답 가져오기
+      const userAnswer = parseInt(document.getElementById('answer1').value);
+      // 정답 여부 확인
+      answer1Correct = (userAnswer === correctPrice);
+      if (answer1Correct) {
+        correctCount++;
+      } else {
+        incorrectCount++;
+      }
+      // 제출 버튼 비활성화, 수정 버튼 활성화
+      document.getElementById('submit1').disabled = true;
+      document.getElementById('edit1').disabled = false;
+      // 입력 칸 비활성화
+      document.getElementById('answer1').disabled = true;
+    }
+
+    // 2번 문제
+    function checkAnswer2() {
+      // 목살 가격 가져오기
+      const moksalPrice = parseInt(document.querySelector('.table1 tr:nth-child(3) td:nth-child(2)').textContent);
+      // 돼지김치찜 4인분 가격 계산 (목살 800g 필요)
+      const correctPrice = moksalPrice * 8;
+      // 입력된 답 가져오기
+      const userAnswer = parseInt(document.getElementById('answer2').value);
+      // 정답 여부 확인
+      answer2Correct = (userAnswer === correctPrice);
+      if (answer2Correct) {
+        correctCount++;
+      } else {
+        incorrectCount++;
+      }
+      // 제출 버튼 비활성화, 수정 버튼 활성화
+      document.getElementById('submit2').disabled = true;
+      document.getElementById('edit2').disabled = false;
+      // 입력 칸 비활성화
+      document.getElementById('answer2').disabled = true;
+    }
+
+    // 3번 문제
+    function checkAnswer3() {
+      // 등심과 안심 가격 가져오기
+      const deungsimPrice = parseInt(document.querySelector('.table2 tr:nth-child(2) td:nth-child(2)').textContent);
+      const ansimPrice = parseInt(document.querySelector('.table2 tr:nth-child(3) td:nth-child(2)').textContent);
+      // 등심스테이크 2인분과 안심스테이크 2인분 가격 계산 (등심 400g + 안심 400g)
+      const correctPrice = (deungsimPrice * 4) + (ansimPrice * 4);
+      // 입력된 답 가져오기
+      const userAnswer = parseInt(document.getElementById('answer3').value);
+      // 정답 여부 확인
+      answer3Correct = (userAnswer === correctPrice);
+      if (answer3Correct) {
+        correctCount++;
+      } else {
+        incorrectCount++;
+      }
+      // 제출 버튼 비활성화, 수정 버튼 활성화
+      document.getElementById('submit3').disabled = true;
+      document.getElementById('edit3').disabled = false;
+      // 입력 칸 비활성화
+      document.getElementById('answer3').disabled = true;
+    }
+
+    // 정답 확인 상태 초기화 함수
+    function resetAnswerStatus(questionNumber) {
+      if (questionNumber === 1 && answer1Correct !== null) {
+        if (answer1Correct) correctCount--;
+        else incorrectCount--;
+        answer1Correct = null;
+      } else if (questionNumber === 2 && answer2Correct !== null) {
+        if (answer2Correct) correctCount--;
+        else incorrectCount--;
+        answer2Correct = null;
+      } else if (questionNumber === 3 && answer3Correct !== null) {
+        if (answer3Correct) correctCount--;
+        else incorrectCount--;
+        answer3Correct = null;
+      }
+    }
+
+    // 수정버튼 클릭 시
+    function enableSubmit(questionNumber) {
+      // 해당 문제의 정답 확인 상태 초기화
+      resetAnswerStatus(questionNumber);
+      // 해당 문제의 제출 버튼 활성화
+      document.getElementById(`submit${questionNumber}`).disabled = false;
+      // 해당 문제의 수정 버튼 비활성화
+      document.getElementById(`edit${questionNumber}`).disabled = true;
+      // 입력 칸 활성화
+      document.getElementById(`answer${questionNumber}`).disabled = false;
+    }
+
+    // 모든 버튼 비활성화
+    const disableAllButtons = () => document.querySelectorAll('button').forEach(button => button.disabled = true);
+
+    // 정답 확인
+    function showFinalResult() {
+      alert(`정답: ${correctCount}개, 오답: ${incorrectCount}개`);
+      disableAllButtons();
+    }
+</script>
+</body>
+</html>
