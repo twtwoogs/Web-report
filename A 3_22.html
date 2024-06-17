@@ -40,21 +40,19 @@
     </div>
     <script>
         let clickedButtons = [];
-        let lastClickedButton = null; // 마지막으로 클릭된 버튼
-        let clickEnded = false; // 종료 여부
+        let lastClickedButton = null;
+        let clickEnded = false;
 
-        // 숫자 랜덤 생성
         const generateRandomExpression = (ensureOdd = false) => {
             let num1, num2, sum;
             do {
-                num1 = Math.floor(Math.random() * 90) + 10; // 10부터 99까지 랜덤 생성
+                num1 = Math.floor(Math.random() * 90) + 10;
                 num2 = Math.floor(Math.random() * 90) + 10;
                 sum = num1 + num2;
-            } while (ensureOdd && sum % 2 === 0); // 지정된 길의 합계가 짝수일 경우 홀수로 다시 생성
+            } while (ensureOdd && sum % 2 === 0);
             return `${num1}+${num2}`;
         };
 
-        // 모든 버튼에 랜덤 수식 설정(1_1, 4_4, 제출버튼 제외)
         const setRandomExpressions = () => {
             document.querySelectorAll('button').forEach(button => {
                 if (button.id !== '1_1' && button.id !== '4_4' && button.id !== 'end') {
@@ -63,7 +61,6 @@
             });
         };
 
-        // 정답으로 가는 길 설정(최소 1개가 나오게끔)
         const ensurePath = () => {
             const paths = [
                 ["1_1", "1_2", "1_3", "1_4", "2_4", "3_4", "4_4"],
@@ -73,7 +70,6 @@
             ];
             const chosenPath = paths[Math.floor(Math.random() * paths.length)];
 
-            // 1_1, 4_4 내용 변경 방지
             chosenPath.forEach(id => {
                 if (id !== "1_1" && id !== "4_4") {
                     const button = document.getElementById(id);
@@ -82,21 +78,18 @@
             });
         };
 
-        // 버튼 클릭 시 색깔 변경
         const changecolor = () => {
             return (event) => {
                 if (clickEnded) {
-                    return; // 종료 시 클릭 이벤트 무시
+                    return;
                 }
 
                 const target = event.target;
 
-                // 제출 버튼 클릭 색 변경 막기
                 if (target.id === 'end') {
                     return;
                 }
 
-                // 버튼 색 변경
                 if (target.style.backgroundColor === 'red') {
                     target.style.backgroundColor = 'white';
                     clickedButtons = clickedButtons.filter(button => button !== target);
@@ -105,19 +98,15 @@
                     clickedButtons.push(target);
                 }
 
-                // 다른 버튼 활성화 방지
                 disableAllButtons();
 
-                // 마지막으로 클릭된 빨간색 버튼 업데이트
                 lastClickedButton = clickedButtons[clickedButtons.length - 1];
 
-                // 마지막 클릭된 버튼 및 인접 버튼 활성화
                 if (lastClickedButton) {
                     enableAdjacentButtons(lastClickedButton.id);
                     lastClickedButton.disabled = false;
                 }
 
-                // start 버튼 인접 버튼 재활성화
                 if (clickedButtons.length === 0 || clickedButtons.every(button => button.style.backgroundColor === 'white')) {
                     enableAdjacentButtons('1_1');
                 }
@@ -125,13 +114,12 @@
             };
         };
 
-        // 홀수 확인
         const checkAllOdd = (event) => {
             if (clickEnded) {
-                return; // 종료 시 클릭 이벤트 무시
+                return;
             }
 
-            event.stopPropagation(); // 이벤트 발생 방지
+            event.stopPropagation();
 
             const endButtonClicked = clickedButtons.some(button => button.id === '4_4');
             if (!endButtonClicked) {
@@ -150,10 +138,9 @@
                 alert('실패!');
             }
 
-            clickEnded = true; // 종료 설정
+            clickEnded = true;
         };
 
-        // 시작 버튼과 제출버튼 비활성화 방지
         const disableAllButtons = () => {
             document.querySelectorAll('button').forEach(button => {
                 if (button.id !== '1_1' && button.id !== 'end') {
@@ -162,15 +149,14 @@
             });
         };
 
-        // 버튼 상하좌우 활성화
         const enableAdjacentButtons = (id) => {
             const [row, col] = id.split('_').map(Number);
 
             const adjacentIds = [
-                `${row - 1}_${col}`, // up
-                `${row + 1}_${col}`, // down
-                `${row}_${col - 1}`, // left
-                `${row}_${col + 1}`  // right
+                `${row - 1}_${col}`,
+                `${row + 1}_${col}`,
+                `${row}_${col - 1}`,
+                `${row}_${col + 1}`
             ];
 
             adjacentIds.forEach(adjId => {
@@ -181,36 +167,28 @@
             });
         };
 
-        // 홀수 확인용
         const isOdd = (number) => {
             return number % 2 !== 0;
         };
 
-        // 버튼 텍스트 내용 계산
         const sumOfDigits = (value) => {
             return value.split('+').reduce((sum, num) => sum + parseInt(num), 0);
         };
 
-        // 버튼 클릭 시 changecolor 실행
         document.querySelectorAll('button').forEach(button => {
             button.addEventListener('click', changecolor());
         });
 
-        // end 버튼 클릭 시 결과 실행
         document.getElementById('end').addEventListener('click', (event) => {
             checkAllOdd(event);
         });
 
-        // 버튼 내용 랜덤 생성
         setRandomExpressions();
 
-        // 정답 길 설정
         ensurePath();
 
-        // 시작 버튼 설정
         enableAdjacentButtons('1_1');
 
-        // 모든 버튼 비활성화
         disableAllButtons();
     </script>
 </body>
