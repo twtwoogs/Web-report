@@ -38,6 +38,8 @@
     <div class="row">
         <button id="end" style="width: 100px; height: 50px; margin: 1px;">제출</button>
     </div>
+    <p>------------------------------</p>
+    <button id="nextPage">다음 문제</button>
     <script>
         let clickedButtons = [];
         let lastClickedButton = null;
@@ -190,6 +192,8 @@
         enableAdjacentButtons('1_1');
 
         disableAllButtons();
+
+        document.getElementById('nextPage').addEventListener('click', () => {window.open('주소', '_self');});
     </script>
 </body>
 </html>
