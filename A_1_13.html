@@ -109,6 +109,8 @@
   <button onclick="enableSubmit(3)" id="edit3" disabled>수정</button>
   <p>------------------------------</p>
   <button onclick="showFinalResult()">답안지 제출</button>
+  <p>------------------------------</p>
+  <button id="nextPage">다음 문제</button>
 
   <script>
     let correctCount = 0;
@@ -207,6 +209,8 @@
       alert(`정답: ${correctCount}개, 오답: ${incorrectCount}개`);
       disableAllButtons();
     }
+
+    document.getElementById('nextPage').addEventListener('click', () => {window.open('주소', '_self');});
 </script>
 </body>
 </html>
