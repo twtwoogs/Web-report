@@ -39,7 +39,7 @@
         <button id="end" style="width: 100px; height: 50px; margin: 1px;">제출</button>
     </div>
     <p>------------------------------</p>
-    <button id="nextPage">다음 문제</button>
+    <button id="nextPage" style="width: 100px; height: 50px; margin: 1px;">다음 문제</button>
     <script>
         let clickedButtons = [];
         let lastClickedButton = null;
@@ -57,7 +57,7 @@
 
         const setRandomExpressions = () => {
             document.querySelectorAll('button').forEach(button => {
-                if (button.id !== '1_1' && button.id !== '4_4' && button.id !== 'end') {
+                if (button.id !== '1_1' && button.id !== '4_4' && button.id !== 'end' && button.id !== 'nextPage') {
                     button.innerText = generateRandomExpression();
                 }
             });
